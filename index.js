@@ -27,8 +27,6 @@ const indentificarX = (paramDimensionUno, paramDimendionDos) => {
 
   const dimensionUnoIndentificarX = paramDimensionUno.indexOf("x");
 
-  // console.log(dimensionUnoIndentificarX);
-
   // se obtienen todos los caracteres que estan antes y despues del caracter 'x' en la primer dimension;
   const filasDimensionUnoo = paramDimensionUno.substring(
     0,
@@ -133,19 +131,13 @@ const validDimenciones = async () => {
       columnasDimensionDoos,
     ] = filasColumnasDimensionUnoDos;
 
-    const parametrosDimension = {
-      dimensionUnoX: dimensionUnoIndentificarX,
-      dimensionDosX: dimensionDosIdentificarX,
-    };
-
-    const { dimensionUnoX, dimensionDosX } = parametrosDimension;
-
     //se valida que la dimension de la primer matriz sea igual a la dimension de la segunda matriz y que se respete el formato establecido;
-    if (dimensionUnoX == -1 || dimensionDosX == -1) {
+    if (dimensionUnoIndentificarX == -1 || dimensionDosIdentificarX == -1) {
       console.log(chalk.red("Ingrese una dimension valida para Multiplicar!"));
       console.log(" ");
     }
 
+    //si hay conincidencia entre las dimensiones de las matrices se retorna un array con los datos obtenidos de la funcion indentificarX;
     if (filasDimensionUnoo == columnasDimensionDoos) {
       return [filasColumnasDimensionUnoDos];
     }
