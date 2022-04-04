@@ -22,7 +22,7 @@ const mensajes = [
 ];
 
 //funcion que identifica la posicion del caracter 'x' en las  dimensiones de las matrices;
-const indentificarX = (paramDimensionUno, paramDimendionDos) => {
+const indentificarX = (paramDimensionUno, paramDimensionDos) => {
   // se obtiene la posicion en donde se encuentra el caracter 'x' en la primer dimension;
 
   const dimensionUnoIndentificarX = paramDimensionUno.indexOf("x");
@@ -37,30 +37,31 @@ const indentificarX = (paramDimensionUno, paramDimendionDos) => {
   );
 
   // se obtiene la posicion en donde se encuentra el caracter 'x' en la segunda dimension;
-  const dimensionDosIdentificarX = paramDimendionDos.indexOf("x");
+  const dimensionDosIdentificarX = paramDimensionDos.indexOf("x");
 
   // se obtienen todos los caracteres que estan antes y despues del caracter 'x' en la segunda dimension;
-  const columnasDimensionDoos = paramDimendionDos.substring(
+  const columnasDimensionDoos = paramDimensionDos.substring(
     dimensionDosIdentificarX + 1
   );
-  const filasDimensionDoos = paramDimendionDos.substring(
+  const filasDimensionDoos = paramDimensionDos.substring(
     0,
     dimensionDosIdentificarX
   );
 
   //se retorna un array con los datos obtenidos de la funcion indentificarX;
-  return [
-    dimensionDosIdentificarX,
-    dimensionUnoIndentificarX,
+
+  return {
     filasDimensionUnoo,
     columnasDimensionUnoo,
     filasDimensionDoos,
     columnasDimensionDoos,
-  ];
+    dimensionUnoIndentificarX,
+    dimensionDosIdentificarX,
+  };
 };
 
-//funcion que crear una matriz bidimencional con los datos ingresados por el usuario;
-const crearMatrizBidimencional = async (
+//funcion que crear una matriz biDimensional con los datos ingresados por el usuario;
+const crearMatrizBiDimensional = async (
   paramFilas,
   paramColumnas,
   paramMatriz
@@ -107,7 +108,7 @@ const multiplicacionMatrices = (paramMatriz1, paramMatriz2) => {
 };
 
 //funcion que valida la entrada de datos del usuario;
-const validDimenciones = async () => {
+const validDimensiones = async () => {
   for (let i = 0; true; ) {
     const dimension1 = await prompts(mensajes[0]);
     const dimension2 = await prompts(mensajes[1]);
@@ -122,14 +123,12 @@ const validDimenciones = async () => {
     );
 
     //se destructuran los datos obtenidos de la funcion indentificarX;
-    const [
+    const {
       dimensionDosIdentificarX,
       dimensionUnoIndentificarX,
       filasDimensionUnoo,
-      columnasDimensionUnoo,
-      filasDimensionDoos,
       columnasDimensionDoos,
-    ] = filasColumnasDimensionUnoDos;
+    } = filasColumnasDimensionUnoDos;
 
     //se valida que la dimension de la primer matriz sea igual a la dimension de la segunda matriz y que se respete el formato establecido;
     if (dimensionUnoIndentificarX == -1 || dimensionDosIdentificarX == -1) {
@@ -145,21 +144,16 @@ const validDimenciones = async () => {
 };
 
 // se instancia la funcion que solicita la entrada de datos del usuario, los valida y retorna un array con las dimensiones de las matrices y se guarda en la constante resultValidaciones;
-const resultValidaciones = validDimenciones();
-
-//se accede a los datos obtenidos a partir de la resolucion de la promesa;
-resultValidaciones.then((result) => {
-  //cuando se resuelve la promesa se destructuran los datos obtenidos de la funcion validDimenciones;
+const resultValidaciones = validDimensiones().then((result) => {
+  //cuando se resuelve la promesa se destructuran los datos obtenidos de la funcion validDimensiones;
 
   const [filasColumnasDimensionUnoDos] = result;
-  const [
-    dimensionDosIdentificarX,
-    dimensionUnoIndentificarX,
+  const {
     filasDimensionUnoo,
     columnasDimensionUnoo,
     filasDimensionDoos,
     columnasDimensionDoos,
-  ] = filasColumnasDimensionUnoDos;
+  } = filasColumnasDimensionUnoDos;
 
   // se almacenan las filas y columnas  de las matrices en las siguientes constantes;
   const filasMatriz1 = filasDimensionUnoo;
@@ -168,22 +162,22 @@ resultValidaciones.then((result) => {
   const columnasMatriz1 = columnasDimensionUnoo;
   const columnasMatriz2 = columnasDimensionDoos;
 
-  // se instancia la funcion que crea la matriz bidimencional con los datos ingresados por el usuario para la primera matriz y se almacena en la constante matriz1;
-  const Matriz1 = crearMatrizBidimencional(
+  // se instancia la funcion que crea la matriz biDimensional con los datos ingresados por el usuario para la primera matriz y se almacena en la constante matriz1;
+  const Matriz1 = crearMatrizBiDimensional(
     parseInt(filasMatriz1),
     parseInt(columnasMatriz1),
     "primera Matriz"
   ).then((matriz1) => {
-    //cuando se resuelve la promesa de la funcion crearMatrizBidimencional se instancia la funcion que crea la matriz bidimencional con los datos ingresados por el usuario para la segunda matriz y se almacena en la constante matriz2;
+    //cuando se resuelve la promesa de la funcion crearMatrizBiDimensional se instancia la funcion que crea la matriz biDimensional con los datos ingresados por el usuario para la segunda matriz y se almacena en la constante matriz2;
     console.log("Primera Matriz");
     console.table(matriz1);
 
-    const Matriz2 = crearMatrizBidimencional(
+    const Matriz2 = crearMatrizBiDimensional(
       parseInt(filasMatriz2),
       parseInt(columnasMatriz2),
       "segunda Matriz"
     ).then((matriz2) => {
-      //cuando se resuelve la promesa de la funcion crearMatrizBidimencional se instancia la funcion que multiplica las matrices y se almacena en la constante matriz3;
+      //cuando se resuelve la promesa de la funcion crearMatrizBiDimensional se instancia la funcion que multiplica las matrices y se almacena en la constante matriz3;
 
       console.log("Segunda Matriz");
       console.table(matriz2);
